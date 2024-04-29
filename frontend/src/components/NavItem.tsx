@@ -1,4 +1,3 @@
-import { StyleUtils } from '@/utils/StyleUtils';
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
@@ -25,12 +24,11 @@ export const NavItem = styled.div<NavItemProps>`
 	${(props) =>
 		props.border &&
 		`
-			${StyleUtils.BORDER_COLOR}
 			border-right: 2px solid;
 			border-radius: 5px;
 		`}
 
 	&:hover {
-		${StyleUtils.TEXT_FOCUSED}
+		color: ${({ theme }) => theme.textColor.focused};
 	}
 `;
