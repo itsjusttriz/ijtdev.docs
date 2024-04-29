@@ -1,72 +1,45 @@
-import { useScreenSize } from '@/hooks/useScreenSize';
-import { Theme } from '@/utils/Theme';
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
-import { MobileViewError } from './MobileViewError';
+
 import { SideNav } from './SideNav';
-import { Text } from './ui/Text';
+import { MobileViewMask } from './MobileViewMask';
 
 const Wrapper = styled.div`
-	${Theme.BACKGROUND_COLOR}
-	${Theme.OVERFLOW_Y_HIDDEN}
-
 	height: 100vh;
-	max-height: 100vh;
-	padding: 20px;
-	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 `;
 
-const Content = styled.div`
-	${Theme.MARGIN_X_AUTO}
-
-	max-width: 80%;
-	height: 100%;
-	display: flex;
-	flex-direction: row;
+const SideNavWrap = styled.div`
+	display: grid;
+	grid-template-columns: 0.7fr 2fr; /* First column takes up one-third of the width */
+	grid-gap: 10px;
 `;
 
-const ChildContainer = styled.div`
-	${Theme.TEXT_PRIMARY}
-	${Theme.OVERFLOW_Y_AUTO}
-
-	width: 100%;
-	height: auto;
-	padding: 3rem;
+const MainContent = styled.div`
+	overflow-y: auto;
+	flex-grow: 1;
 `;
 
-const Footer = styled.div`
-	${Theme.TEXT_PRIMARY}
-
-	display: flex;
-	justify-content: center;
-`;
-
-const FooterText = styled(Text)`
-	${Theme.MARGIN_X_AUTO}
+const FixedHeight = styled.div`
+	height: 98vh;
 `;
 
 type PageWrapperProps = HTMLAttributes<HTMLDivElement> & {};
 
 export const PageWrapper = ({ children }: PageWrapperProps) => {
-	const isMobile = useScreenSize();
-
 	return (
 		<Wrapper>
-			<Content>
-				{isMobile ? (
-					<MobileViewError />
-				) : (
-					<>
+			<MobileViewMask>
+				<SideNavWrap>
+					<FixedHeight>
 						<SideNav />
-						<ChildContainer>{children}</ChildContainer>
-					</>
-				)}
-			</Content>
-			<Footer>
-				<FooterText>Copyright @ IJTDEV 2024</FooterText>
-			</Footer>
+					</FixedHeight>
+					<MainContent>
+						<FixedHeight>{children}</FixedHeight>
+					</MainContent>
+				</SideNavWrap>
+			</MobileViewMask>
 		</Wrapper>
 	);
 };

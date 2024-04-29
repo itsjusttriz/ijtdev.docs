@@ -1,24 +1,13 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HomePage } from './pages/Home';
-import { PageWrapper } from './components/PageWrapper';
-import { Text } from './components/ui/Text';
+import { Route, Routes } from 'react-router-dom';
 
-export const Router = () => {
+import { HomePage } from './pages/Home';
+import { NotFound } from './pages/NotFound';
+
+export const Routing = () => {
 	return (
-		<BrowserRouter>
-			<PageWrapper>
-				<Routes>
-					<Route path='/' element={<HomePage />} />
-					<Route
-						path='*'
-						element={
-							<Text bold size={'3rem'}>
-								Not Found
-							</Text>
-						}
-					/>
-				</Routes>
-			</PageWrapper>
-		</BrowserRouter>
+		<Routes>
+			<Route path='/' element={<HomePage />} />
+			<Route path='*' element={<NotFound />} />
+		</Routes>
 	);
 };

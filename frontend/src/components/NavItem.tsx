@@ -1,4 +1,4 @@
-import { Theme } from '@/utils/Theme';
+import { StyleUtils } from '@/utils/StyleUtils';
 import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
@@ -25,12 +25,12 @@ export const NavItem = styled.div<NavItemProps>`
 	${(props) =>
 		props.border &&
 		`
-			${Theme.BORDER_COLOR}
+			${StyleUtils.BORDER_COLOR}
 			border-right: 2px solid;
 			border-radius: 5px;
 		`}
 
 	&:hover {
-		${Theme.TEXT_FOCUSED}
+		${StyleUtils.TEXT_FOCUSED}
 	}
 `;

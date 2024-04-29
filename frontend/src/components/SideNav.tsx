@@ -1,45 +1,76 @@
-import { Theme } from '@/utils/Theme';
-import { ChevronDown, ChevronUp, MoveRight } from 'lucide-react';
-import { useState } from 'react';
 import styled from 'styled-components';
-import { NavItem } from './NavItem';
-import { Text } from './ui/Text';
 import { useNavigate } from 'react-router-dom';
+import { ChevronDown, ChevronUp, MoveRight } from 'lucide-react';
+
+import { navLinks } from '@/utils/SideNavLinks';
+
+import { Text } from './ui/Text';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
-	${Theme.TEXT_PRIMARY}
-	${Theme.OVERFLOW_Y_AUTO}
-	
-	width: 25rem;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 `;
 
 const NavHeader = styled.div`
-	margin: 0;
-	padding: 0;
+	padding: 20px;
 	text-align: center;
 `;
 
-const NavList = styled.div`
-	padding: 12px;
-	margin-top: 1rem;
-`;
-
-const BrandName = styled(Text)`
+const NavTitle = styled(Text)`
+	font-weight: bold;
+	font-size: 3rem;
 	line-height: 0.8;
 `;
 
-const DropdownContent = styled.div`
-	margin-left: 2rem;
+const NavSubtitle = styled(Text)`
+	font-weight: bold;
+`;
+
+const Footer = styled.div`
+	margin-top: auto;
+	text-align: center;
+`;
+
+const NavBody = styled.div`
+	flex: 1; /* Take up remaining space */
+	overflow-y: auto;
+	padding: 0 20px;
+`;
+
+const NavItemList = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: 20rem;
+	margin: 0 auto;
+`;
+
+const NavItem = styled.div<{ nested?: boolean }>`
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+	border-radius: 5px;
+	border-right: 2px solid ${({ theme }) => theme.borderColor};
+
+	margin-left: ${(props) => (!props.nested ? '' : '3rem')};
+
+	&:hover {
+		background-color: ${({ theme }) => theme.textColor.primary + '08'};
+		box-shadow: 2px 2px 1px ${({ theme }) => theme.textColor.primary + '30'};
+		cursor: pointer;
+	}
 `;
 
 type SideNavProps = {};
-
 type State = {
-	show: Record<string, boolean>;
+	show: {
+		[key: string]: boolean;
+	};
 };
 
-const initState: State = {
+const initState = {
 	show: {
 		documentation: false,
 	},
@@ -49,47 +80,76 @@ export const SideNav = ({}: SideNavProps) => {
 	const navigate = useNavigate();
 	const [state, setState] = useState<State>(initState);
 
-	const toggleShow = (key: string) => {
-		setState((prev) => ({
-			...prev,
-			show: {
-				[key]: !prev.show[key],
-			},
-		}));
+	const handleNavItemClick = (link: Record<string, any>) => {
+		if ('url' in link) {
+			navigate(link.url!);
+			return;
+		}
+
+		if ('children' in link) {
+			const key = link.title.toLowerCase();
+
+			setState((prev) => ({
+				...prev,
+				show: {
+					...prev.show,
+					[key]: !prev.show[key],
+				},
+			}));
+			return;
+		}
 	};
 
 	return (
 		<Wrapper>
 			<NavHeader>
-				<BrandName bold size={'3rem'}>
-					IJTDEV
-				</BrandName>
-				<Text bold>Docs & Patch Notes</Text>
+				<NavTitle>IJTDEV</NavTitle>
+				<NavSubtitle>Docs & Patch Notes</NavSubtitle>
 			</NavHeader>
 
-			<NavList>
-				<NavItem bgColor border onClick={() => navigate('/')}>
-					<Text>HomePage</Text>
-					<MoveRight />
-				</NavItem>
+			<NavBody>
+				<NavItemList>
+					{navLinks.map((link) => (
+						<>
+							<NavItem
+								onClick={(e) => {
+									handleNavItemClick(link);
+									e.preventDefault();
+								}}
+							>
+								<Text>{link.title}</Text>
+								{'url' in link && <MoveRight />}
+								{'children' in link &&
+									(!state.show[link.title.toLowerCase()] ? (
+										<ChevronDown />
+									) : (
+										<ChevronUp />
+									))}
+							</NavItem>
+							{'children' in link &&
+							link.children.length &&
+							state.show[link.title.toLowerCase()]
+								? link.children.map((child) => (
+										<NavItem
+											nested
+											onClick={(e) => {
+												handleNavItemClick(child);
+												e.preventDefault();
+											}}
+										>
+											<Text>{child.title}</Text>
+											<MoveRight />
+										</NavItem>
+								  ))
+								: null}
+						</>
+					))}
+				</NavItemList>
+			</NavBody>
 
-				<NavItem
-					bgColor
-					border
-					onClick={() => toggleShow('documentation')}
-				>
-					<Text>Documentation</Text>
-					{state.show.documentation ? <ChevronUp /> : <ChevronDown />}
-				</NavItem>
-				{state.show.documentation && (
-					<DropdownContent>
-						<NavItem onClick={() => navigate('/ijtdev-api')}>
-							<Text>ijtdev/api</Text>
-							<MoveRight />
-						</NavItem>
-					</DropdownContent>
-				)}
-			</NavList>
+			<Footer>
+				<Text>Copyright @ 2024 IJTDEV</Text>
+			</Footer>
 		</Wrapper>
 	);
 };
