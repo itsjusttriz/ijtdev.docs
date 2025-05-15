@@ -1,0 +1,6 @@
+position: 2.5
+label: Bluesky
+collapsible: true
+collapsed: true
+link:
+    type: generated-index

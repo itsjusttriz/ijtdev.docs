@@ -1,0 +1,48 @@
+---
+title: Get User By Handle
+sidebar_label: Get User
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Used to get information about a Bluesky user by their handle.
+
+```curl noInline
+GET https://api.itsjusttriz.com/bsky/user/:handle
+```
+
+## Request Parameters
+
+| Identifier |                     Description                     | Required |
+| ---------- | :-------------------------------------------------: | -------: |
+| :handle    | The `@` handle associated with the bluesky account. |       ✅ |
+
+## Query Parameters
+
+| Identifier |                              Description                               | Required |
+| :--------- | :--------------------------------------------------------------------: | -------: |
+| raw        | Forces a JSON response, holding all related data.<br/>E.g. `?raw=true` |       ✅ |
+
+## Example Responses
+
+<Tabs>
+    <TabItem value="success" label="Success" default>
+        ```ts
+        {
+            "code": 200,
+            "message": "Success",
+            "payload": {...} // This will contain the user data, directly from the BlueSkyAPI.
+        }
+        ```
+    </TabItem>
+    
+    <TabItem value="error" label="Error" default>
+        ```ts
+        {
+            "code": 400,
+            "message": string; // This will detail the reason for the error.
+        }
+        ```
+    </TabItem>
+      </Tabs>

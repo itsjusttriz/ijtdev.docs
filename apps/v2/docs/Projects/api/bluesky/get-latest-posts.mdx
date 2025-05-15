@@ -1,0 +1,50 @@
+---
+title: Get Latest Posts
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Used to get the most recent post from a user.
+
+With a filter applied, this will return the most recent post (singular) that match the filter.
+
+```curl noInline
+GET https://api.itsjusttriz.com/bsky/latest/:handle
+```
+
+## Request Parameters
+
+| Identifier |                     Description                     | Required |
+| ---------- | :-------------------------------------------------: | -------: |
+| :handle    | The `@` handle associated with the bluesky account. |       ✅ |
+
+## Query Parameters
+
+| Identifier |                                       Description                                       | Required |
+| :--------- | :-------------------------------------------------------------------------------------: | -------: |
+| filter     | Filters through the posts for certain content <br/>E.g. `?filter=twitch.tv/itsjusttriz` |      :x: |
+| raw        |         Forces a JSON response, holding all related data.<br/>E.g. `?raw=true`          |      :x: |
+
+## Example Responses
+
+<Tabs>
+    <TabItem value="success" label="Success" default>
+        ```ts
+        {
+            "code": 200,
+            "message": string; // This will be the URL of the most recent post.
+            "payload": {...} // This will contain the post data, directly from the BlueSkyAPI.
+        }
+        ```
+    </TabItem>
+    
+    <TabItem value="error" label="Error" default>
+        ```ts
+        {
+            "code": 400,
+            "message": string; // This will detail the reason for the error.
+        }
+        ```
+    </TabItem>
+      </Tabs>
