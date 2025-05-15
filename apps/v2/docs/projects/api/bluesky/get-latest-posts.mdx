@@ -29,22 +29,26 @@ GET https://api.itsjusttriz.com/bsky/latest/:handle
 ## Example Responses
 
 <Tabs>
-    <TabItem value="success" label="Success" default>
-        ```ts
+  <TabItem value="success" label="Success" default>
+
+   ```jsx
         {
             "code": 200,
             "message": string; // This will be the URL of the most recent post.
             "payload": {...} // This will contain the post data, directly from the BlueSkyAPI.
         }
-        ```
-    </TabItem>
-    
-    <TabItem value="error" label="Error" default>
-        ```ts
+```
+
+</TabItem>
+
+  <TabItem value="error" label="Error">
+
+   ```jsx
         {
             "code": 400,
             "message": string; // This will detail the reason for the error.
         }
-        ```
-    </TabItem>
-      </Tabs>
+```
+
+  </TabItem>
+</Tabs>
