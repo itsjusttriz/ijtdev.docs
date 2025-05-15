@@ -3,6 +3,7 @@
     "version": "2.0.0",
     "private": true,
     "scripts": {
+        "npm:clean": "rm -rf node_modules package-lock.json build",
         "docusaurus": "docusaurus",
         "start": "docusaurus start",
         "build": "docusaurus build",
